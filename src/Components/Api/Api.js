@@ -1,33 +1,31 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+const SearchImage = (query) => {
+    const [image, setImage] = useState({
+        message: []
+    });
 
 
-// search image function that fetch images from API
-const SearchImage=(query)=>{
-    const [useImage,setImage]=useState([]);
-    const [loading,setLoading]=useState(false);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await
+                    axios.get(`https://find-images-backend.herokuapp.com/id?id=${query} `)
+                        .then(image => {
+                            setImage(image.data);
 
-    
-    useEffect(()=>{
-        const fetchData= async ()=>{
-            setLoading(true);
-        try {
-            await
-            axios.get(`https://find-images-backend.herokuapp.com/id?id=${query} `)
-            .then(image=>{
-                setImage(image.data);
-            })
-            setLoading(false);
-        } catch(err){
-          setLoading(false);
-         
+                        })
+
+            } catch (err) {
+                console.log(err)
+
+            }
         }
-    }
 
-    fetchData();
-    },[query]);   
-    return {useImage,loading};
-    
-    }
+        fetchData();
+    }, [query]);
+    return image;
+
+}
 export default SearchImage;
